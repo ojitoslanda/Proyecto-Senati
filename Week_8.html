@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 8 — Customer Service English</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#FFFFFF; --blue:#1B4FD8; --sky:#3B9EFF; --accent:#111827; --green:#22C55E; --red:#EF4444; --white:#FFFFFF; --muted:#8899BB; --card:#F8F9FF; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:#FFFFFF; color:#111827; min-height:100vh; overflow-x:hidden; }
+  header { background:linear-gradient(135deg,#1B4FD8 0%,#0D3B9E 100%); border-bottom:2px solid var(--blue); padding:1.5rem 1.2rem 1rem; text-align:center; position:relative; }
+  header::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--blue),var(--accent),var(--green)); }
+  .badge { display:inline-block; background:var(--blue); color:#111827; font-family:'Syne',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; padding:0.3rem 0.9rem; border-radius:20px; margin-bottom:0.6rem; }
+  header h1 { font-family:'Syne',sans-serif; font-size:1.7rem; font-weight:800; line-height:1.1; color:#FFFFFF; }
+  header h1 span { color:var(--accent); }
+  header p { font-size:0.82rem; color:#4A5580; margin-top:0.4rem; }
+  .tabs { display:flex; overflow-x:auto; gap:0.4rem; padding:1rem 1rem 0; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { flex-shrink:0; background:#F8F9FF; border:1.5px solid #C8D4FF; color:#4A5580; font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:600; padding:0.55rem 1.1rem; border-radius:30px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .tab.active { background:var(--blue); border-color:var(--blue); color:#ffffff;; box-shadow:0 0 16px rgba(27,79,216,0.4); }
+  .tab:hover:not(.active) { border-color:#1B4FD8; color:#1B4FD8; }
+  .content { padding:1rem; }
+  .scene { display:none; animation:fadeIn 0.3s ease; }
+  .scene.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .section-title { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#4A5580; margin-bottom:0.7rem; margin-top:0.3rem; }
+  .phrases-grid { display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1.2rem; }
+  .phrase-card { background:#F8F9FF; border:1.5px solid #C8D4FF; border-radius:12px; padding:0.9rem 1rem; display:flex; align-items:center; gap:0.8rem; position:relative; overflow:hidden; }
+  .phrase-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:3px 0 0 3px; }
+  .phrase-card.greeting::before { background:var(--green); }
+  .phrase-card.info::before { background:var(--sky); }
+  .phrase-card.sorry::before { background:var(--accent); }
+  .phrase-card.bye::before { background:var(--red); }
+  .phrase-icon { font-size:1.4rem; flex-shrink:0; }
+  .phrase-en { font-size:0.9rem; font-weight:500; color:#111827; }
+  .phrase-es { font-size:0.75rem; color:#4A5580; margin-top:0.2rem; }
+  .dialogue-card { background:#F8F9FF; border:1.5px solid #C8D4FF; border-radius:16px; overflow:hidden; margin-bottom:1rem; }
+  .dialogue-header { padding:0.9rem 1.1rem; display:flex; align-items:center; gap:0.7rem; border-bottom:1px solid #C0CCFF; }
+  .emoji-icon { font-size:1.6rem; }
+  .dialogue-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:#111827; }
+  .dialogue-sub { font-size:0.75rem; color:#4A5580; margin-top:0.15rem; }
+  .lines { padding:1rem; display:flex; flex-direction:column; gap:1rem; border-top: none; }
+  .line { display:flex; gap:0.6rem; align-items:flex-start; }
+  .line.right { flex-direction:row-reverse; }
+  .line.right .bubble { background:linear-gradient(135deg,#DBEAFE,#BFDBFE); border-radius:16px 4px 16px 16px; color:#111827; }
+  .avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; border:2px solid #C0CCFF; }
+  .avatar.staff { background:linear-gradient(135deg,#3B82F6,#60A5FA); }
+  .avatar.customer { background:linear-gradient(135deg,#6B7280,#9CA3AF); }
+  .msg { flex:1; }
+  .speaker { font-size:0.68rem; font-weight:600; color:#3B4AB0; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.25rem; }
+  .bubble { background:#F8FAFF; border-radius:4px 16px 16px 16px; padding:0.7rem 0.9rem; font-size:0.88rem; line-height:1.5; color:#111827; font-weight:400; }
+  .bubble em { color:#111827; font-style:normal; font-weight:700; }
+  .pronunc { display:block; margin-top:0.4rem; padding-top:0.35rem; border-top:1px dashed #C0CCFF; font-size:0.74rem; color:#1D4ED8; font-style:italic; }
+  .transl { display:block; margin-top:0.2rem; font-size:0.74rem; color:#4A5580; font-style:italic; }
+  .tip-box { background:#EAF7EE; border:1.5px solid var(--green); border-radius:12px; padding:0.9rem 1rem; margin-bottom:1.2rem; }
+  .tip-title { font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:700; color:var(--green); margin-bottom:0.4rem; }
+  .tip-text { font-size:0.84rem; color:#14532D; line-height:1.6; }
+  .tip-text em { color:#111827; font-style:normal; font-weight:700; }
+  .legend { display:flex; gap:1rem; margin-bottom:1rem; background:#F8F9FF; border:1.5px solid #C8D4FF; border-radius:10px; padding:0.7rem 1rem; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:0.4rem; font-size:0.78rem; }
+  .vocab-table { width:100%; border-collapse:collapse; margin-bottom:1.2rem; }
+  .vocab-table th { background:var(--blue); color:#111827; font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; padding:0.6rem 0.8rem; text-align:left; }
+  .vocab-table td { padding:0.6rem 0.8rem; font-size:0.85rem; border-bottom:1px solid #E0E8FF; background:#F8F9FF; }
+  .vocab-table tr:last-child td { border-bottom:none; }
+  .vocab-table td:first-child { color:var(--accent); font-weight:500; }
+  .vocab-table td:nth-child(2) { color:#1D4ED8; font-style:italic; font-size:0.78rem; }
+  .vocab-table td:last-child { color:#4A5580; font-style:italic; }
+  .note { background:#F8F9FF; border:1.5px solid #C8D4FF; border-radius:12px; padding:0.9rem 1rem; margin-bottom:1rem; font-size:0.84rem; line-height:1.6; color:#111827; }
+  .note strong { color:var(--sky); }
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">Week 8 · Instituto Fibonacci · Pucallpa · Nivel A1</div>
+  <h1>Customer Service <span>English</span></h1>
+  <p>Study the phrases and dialogues carefully before class</p>
+</header>
+<div class="tabs">
+  <button class="tab active" onclick="showTab('phrases')">📋 Phrases</button>
+  <button class="tab" onclick="showTab('enfermeria')">🏥 Enfermería</button>
+  <button class="tab" onclick="showTab('farmacia')">💊 Farmacia</button>
+  <button class="tab" onclick="showTab('anbf')">🏦 ANBF</button>
+  <button class="tab" onclick="showTab('vocab')">📖 Vocabulary</button>
+</div>
+<div class="content">
+
+  <!-- PHRASES -->
+  <div class="scene active" id="scene-phrases">
+    <p class="section-title">👋 Greeting — Saludar</p>
+    <div class="phrases-grid">
+      <div class="phrase-card greeting"><div class="phrase-icon">😊</div><div><div class="phrase-en">Good morning! How can I help you?</div><div class="phrase-es">🔊 Gud mornin! Hau ken ai jelp yu? &nbsp;·&nbsp; 🇵🇪 ¡Buenos días! ¿En qué puedo ayudarle?</div></div></div>
+      <div class="phrase-card greeting"><div class="phrase-icon">🌟</div><div><div class="phrase-en">Good afternoon! Welcome!</div><div class="phrase-es">🔊 Gud afternun! Welkom! &nbsp;·&nbsp; 🇵🇪 ¡Buenas tardes! ¡Bienvenido/a!</div></div></div>
+      <div class="phrase-card greeting"><div class="phrase-icon">🙌</div><div><div class="phrase-en">How can I assist you today?</div><div class="phrase-es">🔊 Hau ken ai asist yu tudei? &nbsp;·&nbsp; 🇵🇪 ¿En qué puedo asistirle hoy?</div></div></div>
+      <div class="phrase-card greeting"><div class="phrase-icon">🪑</div><div><div class="phrase-en">Please take a seat.</div><div class="phrase-es">🔊 Pliis teik a siit. &nbsp;·&nbsp; 🇵🇪 Por favor, tome asiento.</div></div></div>
+      <div class="phrase-card greeting"><div class="phrase-icon">⏱️</div><div><div class="phrase-en">Just a moment, please.</div><div class="phrase-es">🔊 Yost a moument, pliis. &nbsp;·&nbsp; 🇵🇪 Un momento, por favor.</div></div></div>
+    </div>
+    <p class="section-title">ℹ️ Information — Información</p>
+    <div class="phrases-grid">
+      <div class="phrase-card info"><div class="phrase-icon">💬</div><div><div class="phrase-en">I can help you with...</div><div class="phrase-es">🔊 Ai ken jelp yu wid... &nbsp;·&nbsp; 🇵🇪 Puedo ayudarle con...</div></div></div>
+      <div class="phrase-card info"><div class="phrase-icon">💰</div><div><div class="phrase-en">The price is...</div><div class="phrase-es">🔊 De prais is... &nbsp;·&nbsp; 🇵🇪 El precio es...</div></div></div>
+      <div class="phrase-card info"><div class="phrase-icon">🕐</div><div><div class="phrase-en">The opening hours are...</div><div class="phrase-es">🔊 De oupening auers ar... &nbsp;·&nbsp; 🇵🇪 El horario de atención es...</div></div></div>
+      <div class="phrase-card info"><div class="phrase-icon">📋</div><div><div class="phrase-en">Please fill in this form.</div><div class="phrase-es">🔊 Pliis fil in dis form. &nbsp;·&nbsp; 🇵🇪 Por favor, llene este formulario.</div></div></div>
+      <div class="phrase-card info"><div class="phrase-icon">👉</div><div><div class="phrase-en">You need to...</div><div class="phrase-es">🔊 Yu niid tu... &nbsp;·&nbsp; 🇵🇪 Usted necesita...</div></div></div>
+    </div>
+    <p class="section-title">🙏 Apologizing — Disculparse</p>
+    <div class="phrases-grid">
+      <div class="phrase-card sorry"><div class="phrase-icon">😔</div><div><div class="phrase-en">I am sorry for the inconvenience.</div><div class="phrase-es">🔊 Ai am sori for de inconviniense. &nbsp;·&nbsp; 🇵🇪 Lo siento por el inconveniente.</div></div></div>
+      <div class="phrase-card sorry"><div class="phrase-icon">⌛</div><div><div class="phrase-en">I apologize for the wait.</div><div class="phrase-es">🔊 Ai apoloYais for de weit. &nbsp;·&nbsp; 🇵🇪 Me disculpo por la espera.</div></div></div>
+      <div class="phrase-card sorry"><div class="phrase-icon">🔍</div><div><div class="phrase-en">Let me check that for you.</div><div class="phrase-es">🔊 Let mi chek dat for yu. &nbsp;·&nbsp; 🇵🇪 Permítame verificar eso.</div></div></div>
+      <div class="phrase-card sorry"><div class="phrase-icon">⚡</div><div><div class="phrase-en">I will help you right away.</div><div class="phrase-es">🔊 Ai wil jelp yu rait awéi. &nbsp;·&nbsp; 🇵🇪 Le ayudaré de inmediato.</div></div></div>
+      <div class="phrase-card sorry"><div class="phrase-icon">❓</div><div><div class="phrase-en">Is there anything else I can help you with?</div><div class="phrase-es">🔊 Is der enidin els ai ken jelp yu wid? &nbsp;·&nbsp; 🇵🇪 ¿Hay algo más en que pueda ayudarle?</div></div></div>
+    </div>
+    <p class="section-title">👋 Goodbye — Despedida</p>
+    <div class="phrases-grid">
+      <div class="phrase-card bye"><div class="phrase-icon">🙏</div><div><div class="phrase-en">Thank you for coming!</div><div class="phrase-es">🔊 Denk yu for koming! &nbsp;·&nbsp; 🇵🇪 ¡Gracias por venir!</div></div></div>
+      <div class="phrase-card bye"><div class="phrase-icon">☀️</div><div><div class="phrase-en">Have a nice day!</div><div class="phrase-es">🔊 Jav a nais dei! &nbsp;·&nbsp; 🇵🇪 ¡Que tenga un buen día!</div></div></div>
+      <div class="phrase-card bye"><div class="phrase-icon">👋</div><div><div class="phrase-en">See you soon!</div><div class="phrase-es">🔊 Sii yu suun! &nbsp;·&nbsp; 🇵🇪 ¡Hasta pronto!</div></div></div>
+      <div class="phrase-card bye"><div class="phrase-icon">💙</div><div><div class="phrase-en">It was a pleasure to help you!</div><div class="phrase-es">🔊 It wos a pleYer tu jelp yu! &nbsp;·&nbsp; 🇵🇪 ¡Fue un placer ayudarle!</div></div></div>
+      <div class="phrase-card bye"><div class="phrase-icon">🤗</div><div><div class="phrase-en">Take care!</div><div class="phrase-es">🔊 Teik ker! &nbsp;·&nbsp; 🇵🇪 ¡Cuídese!</div></div></div>
+    </div>
+  </div>
+
+  <!-- ENFERMERIA -->
+  <div class="scene" id="scene-enfermeria">
+    <div class="legend">
+      <div class="legend-item"><span style="color:var(--sky)">🔊 Pronunciación</span></div>
+      <div class="legend-item"><span style="color:#4A5580">🇵🇪 Traducción al español</span></div>
+    </div>
+    <div class="dialogue-card">
+      <div class="dialogue-header"><div class="emoji-icon">🏥</div><div><div class="dialogue-title">Enfermería — Nurse &amp; Patient</div><div class="dialogue-sub">Read carefully and practice with a partner</div></div></div>
+      <div class="lines">
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble">Good morning! <em>Welcome to the hospital. How can I help you?</em><span class="pronunc">Gud mornin! Welkom tu de jospital. Hau ken ai jelp yu?</span><span class="transl">¡Buenos días! Bienvenido al hospital. ¿En qué puedo ayudarle?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Patient</div><div class="bubble">Good morning! I have an appointment with the doctor. My name is Carlos Garcia.<span class="pronunc">Gud mornin! Ai jav an apointment wid de doktor. Mai neim is Carlos Garcia.</span><span class="transl">¡Buenos días! Tengo una cita con el doctor. Mi nombre es Carlos García.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble">Of course, Mr. Garcia! <em>Just a moment, please. Let me check that for you.</em><span class="pronunc">Of kors, Mister Garcia! Yost a moument, pliis. Let mi chek dat for yu.</span><span class="transl">¡Por supuesto, Sr. García! Un momento, por favor. Permítame verificar eso.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble">Yes, I can see your appointment. <em>Your appointment is at 10am with Dr. Ramirez.</em><span class="pronunc">Yes, ai ken sii yor apointment. Yor apointment is at ten ei em wid Doktor Ramirez.</span><span class="transl">Sí, puedo ver su cita. Su cita es a las 10am con el Dr. Ramírez.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Patient</div><div class="bubble">Thank you! Is the doctor available now?<span class="pronunc">Denk yu! Is de doktor avéilabl nau?</span><span class="transl">¡Gracias! ¿El doctor está disponible ahora?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble">The doctor is with another patient right now. <em>Please take a seat. He will be with you soon.</em><span class="pronunc">De doktor is wid anoder peishent rait nau. Pliis teik a siit. Ji wil bi wid yu suun.</span><span class="transl">El doctor está con otro paciente ahora. Por favor tome asiento. Él estará con usted pronto.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Patient</div><div class="bubble">Okay. Also, I have a question. Where is the pharmacy?<span class="pronunc">Okei. Olso, ai jav a kuestion. Wer is de farmasi?</span><span class="transl">Está bien. También tengo una pregunta. ¿Dónde está la farmacia?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble"><em>The pharmacy is on the first floor, next to the elevator. You can go after your appointment.</em><span class="pronunc">De farmasi is on de ferst flor, nekst tu de elevéitor. Yu ken gou after yor apointment.</span><span class="transl">La farmacia está en el primer piso, al lado del elevador. Puede ir después de su cita.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Patient</div><div class="bubble">Perfect! And what are the opening hours of the pharmacy?<span class="pronunc">Perfekt! And wot ar de oupening auers of de farmasi?</span><span class="transl">¡Perfecto! ¿Y cuál es el horario de atención de la farmacia?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble"><em>The opening hours are from 8am to 6pm, Monday to Saturday.</em><span class="pronunc">De oupening auers ar from eit ei em tu siks pi em, Mondei tu Saterdei.</span><span class="transl">El horario de atención es de 8am a 6pm, de lunes a sábado.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Patient</div><div class="bubble">Great! Thank you very much for your help!<span class="pronunc">Greit! Denk yu veri moch for yor jelp!</span><span class="transl">¡Genial! ¡Muchas gracias por su ayuda!</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble"><em>It was a pleasure to help you! Is there anything else I can help you with?</em><span class="pronunc">It wos a pleYer tu jelp yu! Is der enidin els ai ken jelp yu wid?</span><span class="transl">¡Fue un placer ayudarle! ¿Hay algo más en que pueda ayudarle?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Patient</div><div class="bubble">No, that is everything. Thank you!<span class="pronunc">Nou, dat is evridin. Denk yu!</span><span class="transl">No, eso es todo. ¡Gracias!</span></div></div></div>
+        <div class="line"><div class="avatar staff">👩‍⚕️</div><div class="msg"><div class="speaker">Nurse</div><div class="bubble"><em>You are welcome! Please take a seat and the doctor will call you soon. Have a nice day!</em><span class="pronunc">Yu ar welkom! Pliis teik a siit and de doktor wil kol yu suun. Jav a nais dei!</span><span class="transl">¡De nada! Por favor tome asiento y el doctor le llamará pronto. ¡Que tenga un buen día!</span></div></div></div>
+      </div>
+    </div>
+    <div class="tip-box"><div class="tip-title">📝 Study Notes — Enfermería</div><div class="tip-text"><em>"How can I help you?"</em> — La frase más importante. Úsala siempre que llegue un paciente.<br><br><em>"Just a moment, please."</em> — Dila cuando necesites tiempo para verificar algo.<br><br><em>"He will be with you soon."</em> — Dile al paciente que el doctor viene pronto.<br><br><em>"You are welcome!"</em> — La respuesta correcta a "Thank you!" = ¡De nada!</div></div>
+  </div>
+
+  <!-- FARMACIA -->
+  <div class="scene" id="scene-farmacia">
+    <div class="legend">
+      <div class="legend-item"><span style="color:var(--sky)">🔊 Pronunciación</span></div>
+      <div class="legend-item"><span style="color:#4A5580">🇵🇪 Traducción al español</span></div>
+    </div>
+    <div class="dialogue-card">
+      <div class="dialogue-header"><div class="emoji-icon">💊</div><div><div class="dialogue-title">Farmacia — Pharmacist &amp; Customer</div><div class="dialogue-sub">Read carefully and practice with a partner</div></div></div>
+      <div class="lines">
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble">Good afternoon! <em>Welcome! How can I help you today?</em><span class="pronunc">Gud afternun! Welkom! Hau ken ai jelp yu tudei?</span><span class="transl">¡Buenas tardes! ¡Bienvenido! ¿En qué puedo ayudarle hoy?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Good afternoon! I need this medicine. The doctor gave me this prescription.<span class="pronunc">Gud afternun! Ai niid dis medisin. De doktor geiv mi dis preskripshon.</span><span class="transl">¡Buenas tardes! Necesito este medicamento. El doctor me dio esta receta.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble">Of course! <em>Let me check the prescription for you. Just a moment, please.</em><span class="pronunc">Of kors! Let mi chek de preskripshon for yu. Yost a moument, pliis.</span><span class="transl">¡Por supuesto! Permítame revisar la receta. Un momento, por favor.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble">I can see the prescription. <em>We have this medicine available. Here it is.</em><span class="pronunc">Ai ken sii de preskripshon. Wi jav dis medisin avéilabl. Jir it is.</span><span class="transl">Puedo ver la receta. Tenemos este medicamento disponible. Aquí está.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Thank you! How much does it cost?<span class="pronunc">Denk yu! Hau moch dos it kost?</span><span class="transl">¡Gracias! ¿Cuánto cuesta?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble"><em>The price is 15 soles.</em> It is a very good medicine for your condition.<span class="pronunc">De prais is fiftiiin soles. It is a veri gud medisin for yor kondishon.</span><span class="transl">El precio es 15 soles. Es un muy buen medicamento para su condición.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Okay. How many times a day do I take it?<span class="pronunc">Okei. Hau meni taims a dei du ai teik it?</span><span class="transl">Está bien. ¿Cuántas veces al día lo tomo?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble"><em>You need to take it 3 times a day — in the morning, at noon and at night, after meals.</em><span class="pronunc">Yu niid tu teik it dri taims a dei — in de mornin, at nuun and at nait, after miils.</span><span class="transl">Debe tomarlo 3 veces al día — en la mañana, al mediodía y en la noche, después de las comidas.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">I understand. And for how many days do I take it?<span class="pronunc">Ai understend. And for hau meni deis du ai teik it?</span><span class="transl">Entiendo. ¿Y por cuántos días lo tomo?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble"><em>You need to take it for 7 days.</em> It is very important to finish all the medicine, even if you feel better.<span class="pronunc">Yu niid tu teik it for seven deis. It is veri important tu finish ol de medisin, iiven if yu fiil beter.</span><span class="transl">Debe tomarlo por 7 días. Es muy importante terminar todo el medicamento, aunque se sienta mejor.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Okay, I understand. Can I store it in the refrigerator?<span class="pronunc">Okei, ai understend. Ken ai stor it in de refriYeréitor?</span><span class="transl">Está bien, entiendo. ¿Puedo guardarlo en el refrigerador?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble"><em>No, please store it in a cool, dry place. Do not put it in the refrigerator.</em><span class="pronunc">Nou, pliis stor it in a kuul, drai pleis. Du not put it in de refriYeréitor.</span><span class="transl">No, por favor guárdelo en un lugar fresco y seco. No lo ponga en el refrigerador.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Perfect! Thank you very much for your help!<span class="pronunc">Perfekt! Denk yu veri moch for yor jelp!</span><span class="transl">¡Perfecto! ¡Muchas gracias por su ayuda!</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble"><em>You are welcome! Is there anything else I can help you with?</em><span class="pronunc">Yu ar welkom! Is der enidin els ai ken jelp yu wid?</span><span class="transl">¡De nada! ¿Hay algo más en que pueda ayudarle?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">No, that is everything. Thank you!<span class="pronunc">Nou, dat is evridin. Denk yu!</span><span class="transl">No, eso es todo. ¡Gracias!</span></div></div></div>
+        <div class="line"><div class="avatar staff">👨‍⚕️</div><div class="msg"><div class="speaker">Pharmacist</div><div class="bubble"><em>Thank you for coming! Take care and get well soon!</em><span class="pronunc">Denk yu for koming! Teik ker and get wel suun!</span><span class="transl">¡Gracias por venir! ¡Cuídese y que se mejore pronto!</span></div></div></div>
+      </div>
+    </div>
+    <div class="tip-box"><div class="tip-title">📝 Study Notes — Farmacia</div><div class="tip-text"><em>"Prescription"</em> — receta médica.<br><br><em>"3 times a day — morning, noon and night."</em> — 3 veces al día — mañana, mediodía y noche.<br><br><em>"Store it in a cool, dry place."</em> — Guárdelo en un lugar fresco y seco.<br><br><em>"Get well soon!"</em> — ¡Que se mejore pronto!</div></div>
+  </div>
+
+  <!-- ANBF -->
+  <div class="scene" id="scene-anbf">
+    <div class="legend">
+      <div class="legend-item"><span style="color:var(--sky)">🔊 Pronunciación</span></div>
+      <div class="legend-item"><span style="color:#4A5580">🇵🇪 Traducción al español</span></div>
+    </div>
+    <div class="dialogue-card">
+      <div class="dialogue-header"><div class="emoji-icon">🏦</div><div><div class="dialogue-title">ANBF — Bank Staff &amp; Customer</div><div class="dialogue-sub">Read carefully and practice with a partner</div></div></div>
+      <div class="lines">
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble">Good morning! <em>Welcome to the bank. How can I assist you today?</em><span class="pronunc">Gud mornin! Welkom tu de benk. Hau ken ai asist yu tudei?</span><span class="transl">¡Buenos días! Bienvenido al banco. ¿En qué puedo asistirle hoy?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Good morning! I would like information about my account, please.<span class="pronunc">Gud mornin! Ai wud laik informéishon abaut mai akáunt, pliis.</span><span class="transl">¡Buenos días! Me gustaría información sobre mi cuenta, por favor.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble">Of course! <em>Could you please show me your ID?</em><span class="pronunc">Of kors! Kud yu pliis shou mi yor ai di?</span><span class="transl">¡Por supuesto! ¿Podría mostrarme su DNI?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Yes, of course. Here is my ID.<span class="pronunc">Yes, of kors. Jir is mai ai di.</span><span class="transl">Sí, por supuesto. Aquí está mi DNI.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble">Thank you. <em>Please fill in this form with your personal information.</em><span class="pronunc">Denk yu. Pliis fil in dis form wid yor personal informéishon.</span><span class="transl">Gracias. Por favor llene este formulario con su información personal.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Okay. Here you go. I also have a question — what is my current balance?<span class="pronunc">Okei. Jir yu gou. Ai olso jav a kuestion — wot is mai kurrent balans?</span><span class="transl">Está bien. Aquí tiene. También tengo una pregunta — ¿cuál es mi saldo actual?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble"><em>Just a moment, please. Let me check that for you.</em><span class="pronunc">Yost a moument, pliis. Let mi chek dat for yu.</span><span class="transl">Un momento, por favor. Permítame verificar eso.</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble"><em>Your current balance is 500 soles.</em> Your last transaction was 3 days ago.<span class="pronunc">Yor kurrent balans is faiv jondred soles. Yor last transákshon wos dri deis agou.</span><span class="transl">Su saldo actual es 500 soles. Su última transacción fue hace 3 días.</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">I see. I also want to make a deposit. Is that possible here?<span class="pronunc">Ai sii. Ai olso wont tu meik a dipósit. Is dat pósible jir?</span><span class="transl">Ya veo. También quiero hacer un depósito. ¿Es posible aquí?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble"><em>Yes, of course! You can make a deposit at window number 3.</em> Would you like me to help you with that?<span class="pronunc">Yes, of kors! Yu ken meik a dipósit at windou nómber dri. Wud yu laik mi tu jelp yu wid dat?</span><span class="transl">¡Sí, por supuesto! Puede hacer un depósito en la ventanilla número 3. ¿Le gustaría que le ayude?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Yes, please! And can I also check my last 5 transactions?<span class="pronunc">Yes, pliis! And ken ai olso chek mai last faiv transákshons?</span><span class="transl">¡Sí, por favor! ¿Y también puedo ver mis últimas 5 transacciones?</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble"><em>Yes! I can print your account statement for you.</em> It will show your last 10 transactions. Is that okay?<span class="pronunc">Yes! Ai ken print yor akáunt stéitment for yu. It wil shou yor last ten transákshons. Is dat okei?</span><span class="transl">¡Sí! Puedo imprimir su estado de cuenta. Mostrará sus últimas 10 transacciones. ¿Está bien?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">Perfect! That is very helpful. Thank you!<span class="pronunc">Perfekt! Dat is veri jelpful. Denk yu!</span><span class="transl">¡Perfecto! Eso es muy útil. ¡Gracias!</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble"><em>You are welcome! Is there anything else I can help you with?</em><span class="pronunc">Yu ar welkom! Is der enidin els ai ken jelp yu wid?</span><span class="transl">¡De nada! ¿Hay algo más en que pueda ayudarle?</span></div></div></div>
+        <div class="line right"><div class="avatar customer">🧑</div><div class="msg"><div class="speaker" style="text-align:right">Customer</div><div class="bubble">No, that is everything. Thank you very much!<span class="pronunc">Nou, dat is evridin. Denk yu veri moch!</span><span class="transl">No, eso es todo. ¡Muchas gracias!</span></div></div></div>
+        <div class="line"><div class="avatar staff">👔</div><div class="msg"><div class="speaker">Staff</div><div class="bubble"><em>It was a pleasure to assist you! Thank you for coming. Have a nice day!</em><span class="pronunc">It wos a pleYer tu asist yu! Denk yu for koming. Jav a nais dei!</span><span class="transl">¡Fue un placer asistirle! Gracias por venir. ¡Que tenga un buen día!</span></div></div></div>
+      </div>
+    </div>
+    <div class="tip-box"><div class="tip-title">📝 Study Notes — ANBF</div><div class="tip-text"><em>"Assist"</em> — más formal que "help". Úsala en el banco para sonar más profesional.<br><br><em>"Balance"</em> — saldo de la cuenta. <em>"Current balance"</em> = saldo actual.<br><br><em>"Deposit"</em> — depósito. <em>"Window"</em> = ventanilla.<br><br><em>"Account statement"</em> — estado de cuenta. Muestra todas las transacciones.</div></div>
+  </div>
+
+  <!-- VOCABULARY -->
+  <div class="scene" id="scene-vocab">
+    <p class="section-title">📖 Key Vocabulary — Vocabulario clave</p>
+    <table class="vocab-table">
+      <tr><th>English</th><th>🔊 Pronunciation</th><th>🇵🇪 Español</th></tr>
+      <tr><td>Customer</td><td>Kástomer</td><td>Cliente</td></tr>
+      <tr><td>Patient</td><td>Péishent</td><td>Paciente</td></tr>
+      <tr><td>Appointment</td><td>Apóintment</td><td>Cita / Turno</td></tr>
+      <tr><td>Prescription</td><td>Preskripshon</td><td>Receta médica</td></tr>
+      <tr><td>Medicine</td><td>Médisin</td><td>Medicamento</td></tr>
+      <tr><td>Account</td><td>Akáunt</td><td>Cuenta bancaria</td></tr>
+      <tr><td>Balance</td><td>Balans</td><td>Saldo</td></tr>
+      <tr><td>Deposit</td><td>Dipósit</td><td>Depósito</td></tr>
+      <tr><td>Transaction</td><td>Transákshon</td><td>Transacción</td></tr>
+      <tr><td>Form</td><td>Form</td><td>Formulario</td></tr>
+      <tr><td>Price</td><td>Prais</td><td>Precio</td></tr>
+      <tr><td>Floor</td><td>Flor</td><td>Piso</td></tr>
+      <tr><td>Elevator</td><td>Elevéitor</td><td>Elevador / Ascensor</td></tr>
+      <tr><td>Window</td><td>Windou</td><td>Ventanilla</td></tr>
+      <tr><td>Opening hours</td><td>Oupening auers</td><td>Horario de atención</td></tr>
+      <tr><td>Available</td><td>Avéilabl</td><td>Disponible</td></tr>
+      <tr><td>Right away</td><td>Rait awéi</td><td>De inmediato</td></tr>
+      <tr><td>After meals</td><td>After miils</td><td>Después de las comidas</td></tr>
+      <tr><td>Get well soon</td><td>Get wel suun</td><td>Que se mejore pronto</td></tr>
+      <tr><td>You are welcome</td><td>Yu ar welkom</td><td>De nada</td></tr>
+    </table>
+    <div class="note"><strong>Study tip:</strong> Cover one column and try to remember the other two. Practice saying each word out loud!<br><br><strong>Consejo:</strong> Tapa una columna e intenta recordar las otras dos. ¡Practica diciendo cada palabra en voz alta!</div>
+  </div>
+
+</div>
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('scene-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
