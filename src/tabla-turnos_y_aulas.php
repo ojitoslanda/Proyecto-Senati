@@ -1,4 +1,7 @@
- <?php require conexion.php ?>
+ <?php 
+ require_once 'conexion.php'; 
+ $resultado = $conexion->query("SELECT id_turno, nombre_turno, hora_entrada, hora_salida FROM turnos");
+ ?>
  
  <table>
         <thead>
