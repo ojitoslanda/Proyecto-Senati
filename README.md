@@ -6,17 +6,6 @@ Basado en la imagen oficial: [Docker Hub - PHP](https://hub.docker.com/_/php)
 
 ---
 
-## Tabla de Contenidos
-
-1. [Construcción de Imágenes](#1-construcción-de-imágenes)
-2. [Ejecución Básica del Contenedor](#2-ejecución-básica-del-contenedor)
-3. [Versionado de Imágenes y Nombres](#3-versionado-de-imágenes-y-nombres)
-4. [Montaje de Volúmenes (Bind Mounts)](#4-montaje-de-volúmenes-bind-mounts)
-5. [Recuperación de Archivos del Contenedor](#5-recuperación-de-archivos-del-contenedor)
-6. [Comandos Frecuentes de Docker](#6-comandos-frecuentes-de-docker)
-
----
-
 ## 1. Construcción de Imágenes
 
 Para compilar la imagen a partir del archivo `Dockerfile` ubicado en la carpeta actual:
@@ -29,35 +18,6 @@ docker build -t hello-php .
 * `.`: Indica el contexto de construcción (directorio actual).
 
 ---
-
-## 2. Ejecución Básica del Contenedor
-
-### Modo interactivo (en primer plano)
-```bash
-docker run -p 3000:80 hello-php
-```
-
-### Modo desacoplado (en segundo plano / background)
-```bash
-docker run -p 3000:80 -d hello-php
-```
-
-* `-p 3000:80`: Mapea el puerto `3000` de tu máquina local al puerto `80` del contenedor (Apache).
-* `-d`: Ejecuta el contenedor en segundo plano (detached mode).
-
----
-
-## 3. Versionado de Imágenes y Nombres
-
-### Construir con etiqueta de versión
-```bash
-docker build -t hello-php:1.0 .
-```
-
-### Listar imágenes disponibles en el equipo
-```bash
-docker images
-```
 
 ### Ejecutar asignando un nombre personalizado al contenedor
 ```bash
@@ -73,10 +33,6 @@ docker run -p 4000:80 -d --name myserver hello-php:1.0
 El montaje vincula tu carpeta local `./src` con el directorio web `/var/www/html` del contenedor para reflejar cambios en tiempo real. La sintaxis varía según la terminal utilizada:
 
 ### 🔹 PowerShell (Windows)
-
-```powershell
-docker run -p 4000:80 -d --name myserver -v "${PWD}/src:/var/www/html" hello-php:1.0
-```
 
 > **Alternativa con la ruta nativa de PowerShell:**
 > ```powershell
