@@ -28,7 +28,7 @@ docker run -p 4000:80 -d --name myserver hello-php:1.0
 
 ---
 
-## 4. Montaje de Volúmenes (Bind Mounts)
+## 2. Montaje de Volúmenes (Bind Mounts)
 
 El montaje vincula tu carpeta local `./src` con el directorio web `/var/www/html` del contenedor para reflejar cambios en tiempo real. La sintaxis varía según la terminal utilizada:
 
@@ -52,7 +52,7 @@ docker run -p 4000:80 -d --name myserver -v "$(pwd)/src:/var/www/html" hello-php
 
 ---
 
-## 5. Recuperación de Archivos del Contenedor
+## 3. Recuperación de Archivos del Contenedor
 
 Si eliminaste accidentalmente tu carpeta local `src` y necesitas extraer el código fuente que viene empaquetado originalmente dentro de la imagen:
 
@@ -87,7 +87,7 @@ Accede a la aplicación desde tu navegador en: [http://localhost:4000](http://lo
 
 ---
 
-## 6. Comandos Frecuentes de Docker
+## 4. Comandos Frecuentes de Docker
 
 | Comando | Acción |
 | :--- | :--- |
