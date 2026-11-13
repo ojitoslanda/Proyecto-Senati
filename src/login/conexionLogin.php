@@ -16,6 +16,8 @@ while($fila = $resultado->fetch_array(MYSQLI_ASSOC)){
         $mensaje = "¡El usuario correcto!";
             if($fila['clave'] == $pass){
                 $mensaje = "¡La contraseña correcta!";
+                session_start(); //creamos una sesion
+                $encontrados = true;
             }else{
                 $mensaje = "¡La contraseña incorrecta!";
             }
