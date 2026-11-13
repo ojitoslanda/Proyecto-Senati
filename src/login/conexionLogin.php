@@ -26,5 +26,10 @@ while($fila = $resultado->fetch_array(MYSQLI_ASSOC)){
     }
     //print_r($fila); //para ver nada mas, si funciona o no
 }
+if($encontrados == true){
+    header("Location: dashboard.php");
+}else{
+    header("Location: index.php");
+}
 
 //Cierre ?>
